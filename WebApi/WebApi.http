@@ -1,0 +1,6 @@
+@WebApi_HostAddress = http://localhost:5290
+
+POST {{WebApi_HostAddress}}/clientes/{{id}}/transacoes
+Accept: application/json
+
+###
