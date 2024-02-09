@@ -1,4 +1,11 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Domain;
 using Domain.Interfaces;
+using Infrastructure;
+using Infrastructure.Repositories;
+using Infrastructure.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using Services;
 using WebApi.Midlewares;
 
@@ -8,10 +15,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
-builder.Services.AddScoped<ITransacoesService, TransacoesService>();
+builder.Services.AddControllers().AddJsonOptions(
+            options => { 
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });;
 
 
+
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<ITransacoesService, TransacoesService>();
+var connectionString  = Environment.GetEnvironmentVariable("SqlServer");
+
+builder.Services.AddDbContext<DatabaseContext>(options => {
+    options.UseSqlServer(connectionString);
+});
+var dataContext = builder.Services.BuildServiceProvider().GetRequiredService<DatabaseContext>();
+dataContext.Database.EnsureCreated();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

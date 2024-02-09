@@ -16,7 +16,8 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5290",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SqlServer":"Server=localhost;Database=Rinha2024;User Id=sa; Password=Password123;TrustServerCertificate=True"
       }
     },
     "https": {

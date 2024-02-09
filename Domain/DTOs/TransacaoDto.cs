@@ -1,13 +1,18 @@
 ﻿using System.Numerics;
 using Domain.DTOs;
+using Domain.Entities;
 using Newtonsoft.Json;
 
 namespace Domain;
 
 public class TransacaoDto : BaseResponse
 {
-    [JsonProperty("limite")]
-    public Int128 Limite {get;set;}
-    [JsonProperty("saldo")]
-    public Int128 Saldo {get;set;}
+    public long Limite {get;set;}
+    public long Saldo {get;set;}
+    public TransacaoDto(long limite, long saldo )
+    {
+        Limite = limite;
+        Saldo = saldo;
+    }
+
 }
