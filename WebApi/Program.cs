@@ -25,10 +25,10 @@ builder.Services.AddControllers().AddJsonOptions(
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<ITransacoesService, TransacoesService>();
-var connectionString  = Environment.GetEnvironmentVariable("SqlServer");
+var connectionString  = Environment.GetEnvironmentVariable("PostgreSQL");
 
 builder.Services.AddDbContext<DatabaseContext>(options => {
-    options.UseSqlServer(connectionString);
+    options.UseNpgsql(connectionString);
 });
 var dataContext = builder.Services.BuildServiceProvider().GetRequiredService<DatabaseContext>();
 dataContext.Database.EnsureCreated();

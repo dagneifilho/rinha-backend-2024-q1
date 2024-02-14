@@ -8,7 +8,7 @@ public class ClientesMapping : IEntityTypeConfiguration<Cliente>
 {
     public void Configure(EntityTypeBuilder<Cliente> builder)
     {
-        builder.ToTable("Clientes", schema:"dbo");
+        builder.ToTable("Clientes");
 
         builder.HasKey(c => c.Id);
         builder.HasMany(c => c.Transacoes).WithOne(t => t.Cliente);

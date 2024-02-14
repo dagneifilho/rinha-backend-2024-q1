@@ -1,5 +1,4 @@
-﻿using Azure.Identity;
-using Domain;
+﻿using Domain;
 using Domain.Interfaces;
 using Infrastructure.Repositories;
 using Infrastructure.Repository;
