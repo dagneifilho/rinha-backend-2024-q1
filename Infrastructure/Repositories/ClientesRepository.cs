@@ -1,29 +1,35 @@
-﻿using Domain;
+﻿using System.Data;
+using Dapper;
+using Domain;
 using Domain.Entities;
+using Infrastructure.Dapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository;
 
 public class ClientesRepository : IClientesRepository
 {
-    private readonly DatabaseContext _context;
-    public ClientesRepository(DatabaseContext context)
+    private readonly IDbConnection _connection;
+    public ClientesRepository(IDbConnectionFactory connectionFactory)
     {
-        _context = context;
+        _connection = connectionFactory.CreateConnection();
     }
 
     public async Task<BaseEntity> GetByIdAsync(int id)
     {
-        return await _context.Clientes.Where(c => c.Id.Equals(id)).FirstOrDefaultAsync();
+        var parameters = new DynamicParameters();
+        parameters.Add("@id", id, DbType.Int32, ParameterDirection.Input);
+        var query = "SELECT \"Id\", \"Limite\", \"Saldo\" FROM \"Clientes\" WHERE \"Id\" = @id;";
+        return await _connection.QueryFirstOrDefaultAsync<Cliente>(query, parameters);
     }
 
-    public void Update(BaseEntity cliente)
+    protected virtual void Dispose(bool disposing)
     {
-        _context.Clientes.Update((Cliente)cliente);
+        _connection.Dispose();
     }
-
     public void Dispose()
     {
+        Dispose(true);
         GC.SuppressFinalize(this);
     }
 

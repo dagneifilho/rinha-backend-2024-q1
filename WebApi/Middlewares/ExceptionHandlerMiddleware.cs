@@ -23,8 +23,8 @@ public class ExceptionHandlerMiddleware : BasicMiddleware
                 Logger.LogInformation(message);
                 return (HttpStatusCode.UnprocessableEntity, message);
             default:
-                message = "Ocorreu um erro no servidor.";
-                Logger.LogError(message);
+                message = "Ocorreu um erro no servidor: ";
+                Logger.LogError(message + exception.Message);
                 return (HttpStatusCode.InternalServerError, message);
         }
     }

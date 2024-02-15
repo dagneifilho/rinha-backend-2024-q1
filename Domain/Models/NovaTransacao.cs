@@ -28,9 +28,11 @@ public class NovaTransacao
         return new Transacao 
         {
             Valor = this.Valor,
-            Tipo = this.Tipo,
+            Tipo = Tipo.ToString(),
             Descricao = this.Descricao,
-            RealizadaEm = DateTime.Now
+            RealizadaEm = DateTime.Now,
+            ClienteId = ClienteId
+        
         };
     }
 }

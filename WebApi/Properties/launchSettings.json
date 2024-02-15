@@ -17,7 +17,7 @@
       "applicationUrl": "http://localhost:5290",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "PostgreSQL":"Server=localhost; Port = 5432;Database=Rinha2024;Username=postgres; Password=1234;"
+        "PostgreSQL":"Server=localhost; Port=5432;Database=Rinha2024;Username=admin; Password=123;"
       }
     },
     "https": {
