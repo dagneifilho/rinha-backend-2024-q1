@@ -1,10 +1,11 @@
-﻿using Domain.Entities;
+﻿
+using Domain.Models;
 
 namespace Domain;
 
 public interface ITransacoesRepository : IDisposable
 {
-    Task<(long, long)> NovaTransacao(Transacao transacao);
+    Task<(int, int)> NovaTransacao(Transacao transacao);
     Task<List<Transacao>> GetTransacoesByIdCliente(int id);
     
 }

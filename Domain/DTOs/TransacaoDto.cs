@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using Domain.DTOs;
-using Domain.Entities;
 using Newtonsoft.Json;
 
 namespace Domain;

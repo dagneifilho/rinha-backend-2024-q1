@@ -1,9 +1,11 @@
-﻿using Domain.Entities;
+﻿
+
+using Domain.Models;
 
 namespace Domain;
 
 public interface IClientesRepository : IDisposable
 {
-    Task<BaseEntity> GetByIdAsync(int id);
+    Task<Cliente> GetByIdAsync(int id);
 
 }

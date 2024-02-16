@@ -1,6 +1,5 @@
 ﻿using Domain;
 using Domain.DTOs;
-using Domain.Entities;
 using Domain.Enums;
 using Domain.Exceptions;
 using Domain.Interfaces;
@@ -18,37 +17,22 @@ public class TransacoesService : ITransacoesService
         _clientesRepository = clientesRepository;
     }
 
-    public async Task<BaseResponse> NovaTransacao(NovaTransacao transacao)
+    public async Task<BaseResponse> NovaTransacao(Transacao transacao)
     {
-        Cliente cliente = (Cliente)await _clientesRepository.GetByIdAsync(transacao.ClienteId);
-        if (cliente is null)
-            throw new ClienteInexistenteException(transacao.ClienteId);
-        (long saldo, long limite) = await _transacoesRepository.NovaTransacao(transacao.ToEntity());
+        (long saldo, long limite) = await _transacoesRepository.NovaTransacao(transacao);
         var transacaoDto = new TransacaoDto(limite, saldo);
         return transacaoDto;
     }
     public async Task<BaseResponse> Extrato(int id)
     {
-
-        var cliente = (Cliente) await _clientesRepository.GetByIdAsync(id);
+        var cliente = await _clientesRepository.GetByIdAsync(id);
         if (cliente is null)
             throw new ClienteInexistenteException(id);
         var transacoes = await _transacoesRepository.GetTransacoesByIdCliente(id);
-        SaldoDto saldo = new();
-        saldo.FromCliente(cliente);
-        var transacoesDto = new List<TransacaoDetailedDto>();
-
-        transacoes.ForEach(t => transacoesDto.Add(new TransacaoDetailedDto(
-            t.Valor,
-            (TipoTransacao)Enum.Parse(typeof(TipoTransacao),t.Tipo),
-            t.Descricao,
-            t.RealizadaEm
-        )));
-
         return new ExtratoDto
         {
-            Saldo = saldo,
-            UltimasTransacoes = transacoesDto
+            Saldo = new SaldoDto{Total = cliente.Saldo, Limite = cliente.Limite, DataExtrato = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ")},
+            UltimasTransacoes = transacoes.Select(t => new TransacaoDetailedDto(t))
         };
     } 
 

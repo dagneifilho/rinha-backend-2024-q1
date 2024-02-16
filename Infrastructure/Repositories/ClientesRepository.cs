@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Dapper;
 using Domain;
-using Domain.Entities;
+using Domain.Models;
 using Infrastructure.Dapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ public class ClientesRepository : IClientesRepository
         _connection = connectionFactory.CreateConnection();
     }
 
-    public async Task<BaseEntity> GetByIdAsync(int id)
+    public async Task<Cliente> GetByIdAsync(int id)
     {
         var parameters = new DynamicParameters();
         parameters.Add("@id", id, DbType.Int32, ParameterDirection.Input);

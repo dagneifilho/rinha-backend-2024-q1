@@ -14,7 +14,7 @@ public class TransacoesController : ControllerBase
         _service = service;
     }
     [HttpPost("clientes/{id}/transacoes")]
-    public async Task<IActionResult> NovaTransacao([FromRoute] int id, [FromBody] NovaTransacao transacao)
+    public async Task<IActionResult> NovaTransacao([FromRoute] int id, [FromBody] Transacao transacao)
     {
         transacao.ClienteId = id;
         if(!ModelState.IsValid)
@@ -30,8 +30,8 @@ public class TransacoesController : ControllerBase
     }
 
 
-    private List<ModelError> GetModelStateErrors(ModelStateDictionary modelState)
+    private List<string> GetModelStateErrors(ModelStateDictionary modelState)
     {
-        return modelState.Values.SelectMany(m => m.Errors).ToList();
+        return modelState.Values.SelectMany(m => m.Errors).Select(x => x.ErrorMessage).ToList();
     }
 }

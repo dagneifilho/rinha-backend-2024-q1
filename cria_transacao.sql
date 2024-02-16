@@ -1,15 +1,15 @@
 CREATE OR REPLACE FUNCTION realizar_transacao(
     p_id int,
-    p_valor bigint,
+    p_valor int,
     p_tipo char,
     p_descricao text,
-    p_realizadaEm date
+    p_realizadaEm timestamp
 ) RETURNS RECORD AS $$
 DECLARE 
-  limite bigint;
-  saldo bigint;
-  novo_saldo bigint;
-  novo_limite bigint;
+  limite int;
+  saldo int;
+  novo_saldo int;
+  novo_limite int;
   resultado RECORD;
 BEGIN 
   -- Travar a tabela "Clientes" em modo exclusivo de linha
@@ -20,7 +20,9 @@ BEGIN
   FROM "Clientes" c 
   WHERE "Id" = p_id 
   FOR UPDATE;
-
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'cliente nao encontrado';
+  END IF;
 
   -- Atualizar o saldo com base no tipo
   IF (p_tipo = 'd') THEN

@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Models;
 using Newtonsoft.Json;
 
 namespace Domain.DTOs;
