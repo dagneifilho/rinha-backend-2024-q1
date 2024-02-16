@@ -13,6 +13,8 @@ CREATE TABLE "Transacoes" (
     "ClienteId" int NOT NULL,
     CONSTRAINT "FK_Transacoes_Clientes_ClienteId" FOREIGN KEY ("ClienteId") REFERENCES "Clientes" ("Id")
 );
+
+CREATE INDEX index_idCliente_transacoes ON "Transacoes"("ClienteId" ASC);
 DO $$
 BEGIN
   INSERT INTO "Clientes" ("Nome", "Limite", "Saldo")

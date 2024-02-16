@@ -20,8 +20,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.6"
-          memory: "200MB"
+          cpus: "0.3"
+          memory: "140MB"
 
   api02:
     # Essa sintaxe reusa o que foi declarado em 'api01'.
@@ -29,7 +29,7 @@ services:
     hostname: api02
     environment:
       - ASPNETCORE_ENVIRONMENT = Development
-      - PostgreSQL= Server=db; Port=5432;Database=Rinha2024;Username=admin; Password=123;Trust Server Certificate=true;
+      - PostgreSQL= Server=db; Port=5432;Database=Rinha2024;Username=admin; Password=123;Trust Server Certificate=true;Minimum Pool Size=50;Maximum Pool Size=2000;
     ports:
       - "8082:8080"
  
@@ -46,8 +46,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.17"
-          memory: "10MB"
+          cpus: "0.2"
+          memory: "40MB"
 
   db:
     image: postgres:latest
@@ -58,6 +58,7 @@ services:
       - POSTGRES_DB=Rinha2024
     ports:
       - "5432:5432"
+    command: postgres  -c 'max_connections=500'  -c 'checkpoint_timeout=600' -c shared_buffers=150MB
     volumes:
       - ./script.sql:/docker-entrypoint-initdb.d/script.sql
       - ./cria_transacao.sql:/docker-entrypoint-initdb.d/cria_transacao.sql
@@ -68,14 +69,8 @@ services:
           # aqui declarados é de 1.5 unidades de CPU e 550MB
           # de memória. A distribuição feita aqui é apenas
           # um exemplo – distribua como quiser.
-          cpus: "0.13"
-          memory: "140MB"
-    healthcheck:
-      test: ["CMD", "pg_isready", "--username", "postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 20
-      start_period: 10s
+          cpus: "0.7"
+          memory: "230MB"
 
 # O uso do modo `bridge` deve ser adequado à carga que será usada no teste.
 # A edição anterior se beneficiou do modo host pois o volume de requisições

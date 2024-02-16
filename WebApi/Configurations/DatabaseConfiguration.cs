@@ -9,6 +9,6 @@ public static class DatabaseConfiguration
     {
         var connectionString = Environment.GetEnvironmentVariable("PostgreSQL");
         services.AddSingleton(_ => new DatabaseConfig{ConnectionString = connectionString});
-        services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
+        services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
     }
 }
