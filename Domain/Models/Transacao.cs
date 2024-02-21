@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Domain.Models;
 
-public class Transacao
+public class Transacao : IValidatableObject
 {
     [Newtonsoft.Json.JsonIgnore]
     public int Id {get;set;}
@@ -15,11 +15,10 @@ public class Transacao
     public int ClienteId {get;set;}
     [Required]
     [JsonProperty("valor")]
-    public int Valor {get;set;}
+    public int? Valor {get;set;}
     [Required]
     [JsonProperty("tipo")]
-    [Newtonsoft.Json.JsonConverter(typeof(JsonStringEnumConverter))]
-    public TipoTransacao Tipo {get;set;}
+    public string Tipo {get;set;}
     [Required]
     [JsonProperty("descricao")]
     [Length(1,10)]
@@ -27,4 +26,9 @@ public class Transacao
     [Newtonsoft.Json.JsonIgnore]
     public DateTime RealizadaEm {get;set;} = DateTime.Now;
 
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if(string.IsNullOrEmpty(Tipo) || !Enum.TryParse(typeof(TipoTransacao), Tipo, out _))
+            yield return new ValidationResult("The field 'tipo' is required and must be c or d", new string[]{"tipo"});
+    }
 }

@@ -18,6 +18,7 @@ public abstract class BasicMiddleware
     {
         try 
         {
+            
             await _next(context);
         }
         catch(Exception ex)

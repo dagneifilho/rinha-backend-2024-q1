@@ -7,8 +7,8 @@ services:
     image: rinha
     hostname: api01
     environment:
-      - ASPNETCORE_ENVIRONMENT = Development
-      - PostgreSQL= Server=db; Port=5432;Database=Rinha2024;Username=admin; Password=123;Trust Server Certificate=true;
+      # - ASPNETCORE_ENVIRONMENT = Development
+      - PostgreSQL= Server=db; Port=5432;Database=Rinha2024;Username=admin; Password=123;Trust Server Certificate=true;;Minimum Pool Size=50;Maximum Pool Size=2000;Multiplexing=true;Timeout=15;Command Timeout=15;Cancellation Timeout=-1;No Reset On Close=true;Max Auto Prepare=20;Auto Prepare Min Usages=1
     
     # Não é necessário expor qualquer porta além da porta do load balancer,
     # mas é comum as pessoas o fazerem para testarem suas APIs e conectarem
@@ -21,14 +21,14 @@ services:
       resources:
         limits:
           cpus: "0.3"
-          memory: "100MB"
+          memory: "110MB"
 
   api02:
     # Essa sintaxe reusa o que foi declarado em 'api01'.
     <<: *api 
     hostname: api02
     environment:
-      - ASPNETCORE_ENVIRONMENT = Development
+      # - ASPNETCORE_ENVIRONMENT = Development
       - PostgreSQL= Server=db; Port=5432;Database=Rinha2024;Username=admin; Password=123;Trust Server Certificate=true;;Minimum Pool Size=50;Maximum Pool Size=2000;Multiplexing=true;Timeout=15;Command Timeout=15;Cancellation Timeout=-1;No Reset On Close=true;Max Auto Prepare=20;Auto Prepare Min Usages=1
     ports:
       - "8082:8080"
@@ -47,7 +47,7 @@ services:
       resources:
         limits:
           cpus: "0.2"
-          memory: "40MB"
+          memory: "20MB"
 
   db:
     image: postgres:latest

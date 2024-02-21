@@ -18,8 +18,8 @@ public class TransacaoDetailedDto
     }
     public TransacaoDetailedDto(Transacao transacao)
     {   
-        Valor = transacao.Valor;
-        Tipo = transacao.Tipo;
+        Valor = transacao.Valor.Value;
+        Tipo = (TipoTransacao)Enum.Parse(typeof(TipoTransacao), transacao.Tipo);
         Descricao = transacao.Descricao;
         RealizadaEm = transacao.RealizadaEm.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ");
     }

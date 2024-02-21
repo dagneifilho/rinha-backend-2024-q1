@@ -17,8 +17,6 @@ public class TransacoesController : ControllerBase
     public async Task<IActionResult> NovaTransacao([FromRoute] int id, [FromBody] Transacao transacao)
     {
         transacao.ClienteId = id;
-        if(!ModelState.IsValid)
-            return StatusCode(400,GetModelStateErrors(ModelState));
         return StatusCode(200, await _service.NovaTransacao(transacao));
         
     }

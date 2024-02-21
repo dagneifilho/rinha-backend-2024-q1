@@ -5,8 +5,10 @@ using Domain.Interfaces;
 using Infrastructure;
 using Infrastructure.Repositories;
 using Infrastructure.Repository;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Services;
+using WebApi;
 using WebApi.Configurations;
 using WebApi.Midlewares;
 
@@ -20,7 +22,12 @@ builder.Services.AddControllers().AddJsonOptions(
             options => { 
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            });;
+
+            })
+        .ConfigureApiBehaviorOptions( options => 
+        {
+            options.InvalidModelStateResponseFactory = actionContext => new UnprocessableEntityObjectResult(Util.GetModelStateErrors(actionContext.ModelState));
+        });;
 builder.Services.AddTransient<ITransacoesRepository, TransacoesRepository>();
 builder.Services.AddTransient<IClientesRepository, ClientesRepository>();
 builder.Services.AddTransient<ITransacoesService, TransacoesService>();
